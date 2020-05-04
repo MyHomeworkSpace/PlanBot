@@ -29,7 +29,7 @@ Copy the [`config.sample.toml`](./config.sample.toml) file and name the copy `co
 | Field | Key | Description |
 |---|---|---|
 | Bot token | `token` | The bot OAuth token from Slack. It should begin with `xoxb-`. |
-| Error log channel | `C260FU7HQ` | The slack channel to post errors in. |
+| Error log channel | `errlogChannel` | The slack channel to post errors in. |
 
 Note that the Slack bot token requires the following OAuth permissions:
 - `chat:write`
