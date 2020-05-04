@@ -1,0 +1,19 @@
+[github]
+organization = "MyHomeworkSpace"
+repo = "TestRepo"
+privateKey = "./privatekey.pem"
+appId = 99
+installationId = 999999
+
+[unassign]
+daysUntilWarning = 5
+daysUntilUnassign = 10
+
+[slack]
+token = "xoxb-something"
+errlogChannel = "C260FU7HQ"
+
+[users]
+willbarkoff = "U0EGTKEFM"
+thatoddmailbox = "U0EGDRXEK"
+amanzansky = "U0G281Q8L"
