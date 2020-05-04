@@ -42,5 +42,5 @@ For example:
 [users]
 willbarkoff = "U0EGTKEFM"
 thatoddmailbox = "U0EGDRXEK"
-amanzansky = "U0G281Q8L"
+amazansky = "U0G281Q8L"
 ```
