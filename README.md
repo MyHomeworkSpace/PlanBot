@@ -1,5 +1,5 @@
 # PlanBot
-[![Build Status](https://travis-ci.org/MyHomeworkSpace/PlanBot.svg?branch=master)](https://travis-ci.org/MyHomeworkSpace/PlanBot)
+[![Build Status](https://travis-ci.org/MyHomeworkSpace/PlanBot.svg?branch=master)](https://travis-ci.org/MyHomeworkSpace/PlanBot) ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/myhomeworkspace/planbot)
 
 PlanBot is a friendly helper for the MyHomeworkSpace development team! You may have seen it pop up on issues and unassign people who haven't been working on them. It also nags you on slack if you have an issue assigned to you that you haven't made any progress on. That's all it does for now, but hopefully it will do more in the future.
 
