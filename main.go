@@ -18,6 +18,17 @@ import (
 var slackAPI *slack.Client
 var config = Config{}
 
+func arrayHasOverlap(list1 []string, list2 []string) bool {
+	for _, a := range list1 {
+		for _, b := range list2 {
+			if a == b {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func main() {
 	configure(&config)
 
@@ -38,37 +49,48 @@ func main() {
 
 	opts := &github.IssueListByRepoOptions{Assignee: "*", State: "open"}
 
-	issues, _, err := gh.Issues.ListByRepo(context.Background(), config.GitHub.Organization, config.GitHub.Repo, opts)
-	if err != nil {
-		logError("[FATAL] Getting issues", err)
-		panic(err)
-	}
-
-	for _, issue := range issues {
-		assignees := []string{}
-		for _, assignee := range issue.Assignees {
-			assignees = append(assignees, *assignee.Login)
+	for _, repo := range config.GitHub.Repos {
+		issues, _, err := gh.Issues.ListByRepo(context.Background(), config.GitHub.Organization, repo, opts)
+		if err != nil {
+			logError("[FATAL] Getting issues", err)
+			panic(err)
 		}
-		if issue.UpdatedAt.Add(timeUntilUnassigned).Before(time.Now()) {
-			// the issue hasn't been updated in a week
-			message := "Hi! I've removed @" + strings.Join(assignees, ", @") + " from this issue due to a lack of activity. If this is a mistake, feel free to reassign yourself. If you would like to work on this issue, feel free to assign yourself."
-			_, _, err = gh.Issues.RemoveAssignees(context.Background(), config.GitHub.Organization, config.GitHub.Repo, *issue.Number, assignees)
-			if err != nil {
-				logError("Removing issue assignees", err)
+
+		for _, issue := range issues {
+			labels := []string{}
+			for _, label := range issue.Labels {
+				labels = append(labels, *label.Name)
+			}
+
+			if arrayHasOverlap(config.GitHub.IgnoreLabels, labels) {
 				continue
 			}
-			_, _, err = gh.Issues.CreateComment(context.Background(), config.GitHub.Organization, config.GitHub.Repo, *issue.Number, &github.IssueComment{
-				Body: github.String(message),
-			})
-			if err != nil {
-				logError("Creating issue comment", err)
+
+			assignees := []string{}
+			for _, assignee := range issue.Assignees {
+				assignees = append(assignees, *assignee.Login)
 			}
-		} else if issue.UpdatedAt.Add(timeUntilNotified).Before(time.Now()) {
-			for _, assignee := range assignees {
-				message := "Hi! This is a warning that due to a lack of activity on <" + *issue.HTMLURL + "|Issue #" + strconv.Itoa(*issue.Number) + ">, you will be unassigned soon. Comment on the issue if you want to stay assigned (A simple \"bump\" will suffice)."
-				_, _, _, err := slackAPI.SendMessage(config.Users[assignee], slack.MsgOptionText(message, false))
+			if issue.UpdatedAt.Add(timeUntilUnassigned).Before(time.Now()) {
+				// the issue hasn't been updated in a week
+				message := "Hi! I've removed @" + strings.Join(assignees, ", @") + " from this issue due to a lack of activity. If this is a mistake, feel free to reassign yourself. If you would like to work on this issue, feel free to assign yourself."
+				_, _, err = gh.Issues.RemoveAssignees(context.Background(), config.GitHub.Organization, repo, *issue.Number, assignees)
 				if err != nil {
-					logError("Posting message to slack", err)
+					logError("Removing issue assignees", err)
+					continue
+				}
+				_, _, err = gh.Issues.CreateComment(context.Background(), config.GitHub.Organization, repo, *issue.Number, &github.IssueComment{
+					Body: github.String(message),
+				})
+				if err != nil {
+					logError("Creating issue comment", err)
+				}
+			} else if issue.UpdatedAt.Add(timeUntilNotified).Before(time.Now()) {
+				for _, assignee := range assignees {
+					message := "Hi! This is a warning that due to a lack of activity on <" + *issue.HTMLURL + "|Issue #" + strconv.Itoa(*issue.Number) + ">, you will be unassigned soon. Comment on the issue if you want to stay assigned (A simple \"bump\" will suffice)."
+					_, _, _, err := slackAPI.SendMessage(config.Users[assignee], slack.MsgOptionText(message, false))
+					if err != nil {
+						logError("Posting message to slack", err)
+					}
 				}
 			}
 		}

@@ -11,10 +11,12 @@ Copy the [`config.sample.toml`](./config.sample.toml) file and name the copy `co
 | Field | Key | Description |
 |---|---|---|
 | Organazation | `organization` | The GitHub organization that PlanBot should operate in |
-| Repository | `repo` | The GitHub repository that PlanBot should operate in |
-| Private Key | `privatekey` | Path to the Private Key file that GitHub provides for your app. You can generate a private key in the "General" tab of your app settings on GitHub. |
+| Repositories | `repos` | The GitHub repositories that PlanBot should operate in |
+| Private key | `privatekey` | Path to the Private Key file that GitHub provides for your app. You can generate a private key in the "General" tab of your app settings on GitHub. |
 | App ID | `appId` | The App ID that GitHub generates for your app. You can find it under the "About" section of your app's settings page (under the "General" tab) |
 | Installation ID | `installationId` | The Installation ID that GitHub generates for the specific installation of the app to your organization. You can find this in the URL of the app install page, which can be reached by clicking the gear in the "Install App" tab of your app settings. In the URL, the Installation ID is found at the end, for example, in https://github.com/apps/mhs-planbot/installations/3423413, `3423413` is the installation ID. |
+| Ignore labels | `ignoreLabels` | A list of labels that the bot should ignore |
+
 
 ### `unassign`
 | Field | Key | Description |

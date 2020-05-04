@@ -10,11 +10,12 @@ type Config struct {
 }
 
 type GithubConfig struct {
-	Organization   string `toml:"organization"`
-	Repo           string `toml:"repo"`
-	PrivateKey     string `toml:"privateKey"`
-	AppID          int64  `toml:"appId"`
-	InstallationID int64  `toml:"installationId"`
+	Organization   string   `toml:"organization"`
+	Repos          []string `toml:"repo"`
+	PrivateKey     string   `toml:"privateKey"`
+	AppID          int64    `toml:"appId"`
+	InstallationID int64    `toml:"installationId"`
+	IgnoreLabels   []string `toml:"ignoreLabels"`
 }
 
 type SlackConfig struct {

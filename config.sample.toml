@@ -1,9 +1,10 @@
 [github]
 organization = "MyHomeworkSpace"
-repo = "TestRepo"
+repos = ["TestRepo", "TestRepo2"]
 privateKey = "./privatekey.pem"
 appId = 99
 installationId = 999999
+ignoreLabels = ["waiting for details"]
 
 [unassign]
 daysUntilWarning = 5
