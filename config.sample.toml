@@ -1,6 +1,6 @@
 [github]
 organization = "MyHomeworkSpace"
-repos = ["TestRepo", "TestRepo2"]
+repos = ["PlanBotTestRepo"]
 privateKey = "./privatekey.pem"
 appId = 99
 installationId = 999999

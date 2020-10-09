@@ -81,12 +81,13 @@ func main() {
 				_, _, err = gh.Issues.CreateComment(context.Background(), config.GitHub.Organization, repo, *issue.Number, &github.IssueComment{
 					Body: github.String(message),
 				})
+				// fmt.Println(message)
 				if err != nil {
 					logError("Creating issue comment", err)
 				}
 			} else if issue.UpdatedAt.Add(timeUntilNotified).Before(time.Now()) {
 				for _, assignee := range assignees {
-					message := "Hi! This is a warning that due to a lack of activity on <" + *issue.HTMLURL + "|Issue #" + strconv.Itoa(*issue.Number) + ">, you will be unassigned soon. Comment on the issue if you want to stay assigned (A simple \"bump\" will suffice)."
+					message := "Hi! This is a warning that due to a lack of activity on <" + *issue.HTMLURL + "|" + config.GitHub.Organization + "/" + repo + "#" + strconv.Itoa(*issue.Number) + ">, you will be unassigned soon. Comment on the issue if you want to stay assigned (A simple \"bump\" will suffice)."
 					_, _, _, err := slackAPI.SendMessage(config.Users[assignee], slack.MsgOptionText(message, false))
 					if err != nil {
 						logError("Posting message to slack", err)
