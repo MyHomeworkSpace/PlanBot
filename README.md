@@ -3,7 +3,7 @@
 
 PlanBot is a friendly helper for the MyHomeworkSpace development team! You may have seen it pop up on issues and unassign people who haven't been working on them. It also nags you on slack if you have an issue assigned to you that you haven't made any progress on. That's all it does for now, but hopefully it will do more in the future.
 
-The bot is run daily on a cronjob.
+The bot is run daily on a cronjob at 21:00:00 UTC (5:00 PM EDT, 4:00 PM EST)
 
 ## Development Setup
 Copy the [`config.sample.toml`](./config.sample.toml) file and name the copy `config.toml`. Here is a breif description of each of the configuration options.
@@ -12,7 +12,7 @@ Copy the [`config.sample.toml`](./config.sample.toml) file and name the copy `co
 | Field | Key | Description |
 |---|---|---|
 | Organazation | `organization` | The GitHub organization that PlanBot should operate in |
-| Repositories | `repos` | The GitHub repositories that PlanBot should operate in |
+| Repositories | `repo` | The GitHub repositories that PlanBot should operate in |
 | Private key | `privatekey` | Path to the Private Key file that GitHub provides for your app. You can generate a private key in the "General" tab of your app settings on GitHub. |
 | App ID | `appId` | The App ID that GitHub generates for your app. You can find it under the "About" section of your app's settings page (under the "General" tab) |
 | Installation ID | `installationId` | The Installation ID that GitHub generates for the specific installation of the app to your organization. You can find this in the URL of the app install page, which can be reached by clicking the gear in the "Install App" tab of your app settings. In the URL, the Installation ID is found at the end, for example, in https://github.com/apps/mhs-planbot/installations/3423413, `3423413` is the installation ID. |
